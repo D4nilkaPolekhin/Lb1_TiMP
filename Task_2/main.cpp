@@ -1,25 +1,41 @@
-#include <stdio.h>
 #include <iostream>
-#include <string>
-#include "/home/stud/C++Projects/Lb_TiMP/Lb_TiMP/Chifr.h"
-using namespace std;
+#include "TableTranspositionCipher.h"
 
-string encrypt(string in, const int kluch);
-string decrypt(string in, const int kluch);
-
-int main(int argc, char **argv)
+int main()
 {
-    chifr enc;
-    int COLS = 10;
+    std::string plaintext;
+    int key;
+    unsigned op;
 
-    string public_message = "GERALTISRIVII";
-    string privat_message = enc.encrypt(public_message, COLS);
-    string decode_message = enc.decrypt(privat_message, COLS);
+    std::cout << "Enter number of columns: ";
+    std::cin >> key;
+    std::cin.ignore();
+    TableTranspositionCipher cipher(key);
 
-    cout << "Столбцы = " << COLS << endl;
-    cout << public_message << endl;
-    cout << privat_message << endl;
-    cout << decode_message << endl;
+    do {
+        std::cout<<"Cipher ready. Input operation (0-exit, 1-encrypt, 2-decrypt): ";
+        std::cin>>op;
+        if (op > 2) {
+            std::cout<<"Illegal operation\n";
+        } else if (op >0) {
 
+            std::cout << "Enter plaintext: ";
+            std::cin.ignore();
+            std::getline(std::cin, plaintext);
+
+            if (op==1) {
+
+                std::string ciphertext = cipher.encrypt(plaintext);
+                std::cout << "Encrypted text: " << ciphertext << std::endl;
+
+            } else {
+
+                std::string decryptedText = cipher.decrypt(plaintext);
+                std::cout << "Decrypted text: " << decryptedText << std::endl;
+
+            }
+
+        }
+    } while (op!=0);
     return 0;
 }
