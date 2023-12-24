@@ -1,51 +1,39 @@
-#include <iostream>
 #include "modAlphaCipher.h"
-#include <vector>
-#include <map>
-#include <string>
-using namespace std;
-wstring numAlpha=L"АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-map <wchar_t,int> alphaNum;
 
-modAlphaCipher::modAlphaCipher(const wstring& skey)
+modAlphaCipher::modAlphaCipher(const std::wstring& skey)
 {
-    for (int i = 0; i<numAlpha.size(); i++) {
+    for (unsigned i=0; i<numAlpha.size(); i++) {
         alphaNum[numAlpha[i]]=i;
     }
     key = convert(skey);
-
 }
-
-std::wstring modAlphaCipher::encrypt(const wstring& open_text)
+std::wstring modAlphaCipher::encrypt(const std::wstring& open_text)
 {
-    vector<int> work = convert(open_text);
+    std::vector<int> work = convert(open_text);
     for(unsigned i=0; i < work.size(); i++) {
         work[i] = (work[i] + key[i % key.size()]) % alphaNum.size();
     }
     return convert(work);
 }
-
-wstring modAlphaCipher::decrypt(const std::wstring& cipher_text)
+std::wstring modAlphaCipher::decrypt(const std::wstring& cipher_text)
 {
-    vector<int> work = convert(cipher_text);
+    std::vector<int> work = convert(cipher_text);
     for(unsigned i=0; i < work.size(); i++) {
         work[i] = (work[i] + alphaNum.size() - key[i % key.size()]) % alphaNum.size();
     }
     return convert(work);
 }
-
-inline vector<int> modAlphaCipher::convert(const wstring& str)
+inline std::vector<int> modAlphaCipher::convert(const std::wstring& s)
 {
-    vector<int> result;
-    for(auto c:str) {
+    std::vector<int> result;
+    for(auto c:s) {
         result.push_back(alphaNum[c]);
     }
     return result;
 }
-
-inline wstring modAlphaCipher::convert(const vector<int>& v)
+inline std::wstring modAlphaCipher::convert(const std::vector<int>& v)
 {
-    wstring result;
+    std::wstring result;
     for(auto i:v) {
         result.push_back(numAlpha[i]);
     }
